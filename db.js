@@ -11,7 +11,7 @@ var Video = new mongoose.Schema({
 var User = new mongoose.Schema({
 	username: String,
 	password: String,
-	playlist: [String] //
+	playlist: [String] 
 });
 
 var Playlist = new mongoose.Schema({

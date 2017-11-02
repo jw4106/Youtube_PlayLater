@@ -79,11 +79,10 @@ Video objects {
 
 ## [Link to Initial Main Project File](app.js) 
 
-(___TODO__: create a skeleton Express application with a package.json, app.js, views folder, etc. ... and link to your initial app.js_)
+https://github.com/nyu-csci-ua-0480-007-fall-2017/jw4106-final-project/blob/master/app.js
 
 ## Annotations / References Used
 
-(___TODO__: list any tutorials/references/etc. that you've based your code off of_)
-
 1. [passport.js authentication docs](http://passportjs.org/docs) - (add link to source code that was based on this)
-2. [tutorial on vue.js](https://vuejs.org/v2/guide/) - (add link to source code that was based on this)
+2. [Youtube API tutorial](https://www.youtube.com/watch?v=-vH2eZAM30s)
+3. Not many tutorials yet...
