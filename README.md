@@ -29,8 +29,6 @@ Video objects {
 
 ## [Link to Commented First Draft Schema](db.js) 
 
-[db.js](https://github.com/nyu-csci-ua-0480-007-fall-2017/jw4106-final-project/blob/master/db.js)
-
 ## Wireframes
 
 / - page for Login
