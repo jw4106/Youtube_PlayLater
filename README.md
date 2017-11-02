@@ -29,7 +29,7 @@ Video objects {
 
 ## [Link to Commented First Draft Schema](db.js) 
 
-(___TODO__: create a first draft of your Schemas in db.js and link to it_)
+[db.js](https://github.com/nyu-csci-ua-0480-007-fall-2017/jw4106-final-project/blob/master/db.js)
 
 ## Wireframes
 
@@ -79,7 +79,7 @@ Video objects {
 
 ## [Link to Initial Main Project File](app.js) 
 
-https://github.com/nyu-csci-ua-0480-007-fall-2017/jw4106-final-project/blob/master/app.js
+[app.js](https://github.com/nyu-csci-ua-0480-007-fall-2017/jw4106-final-project/blob/master/app.js)
 
 ## Annotations / References Used
 
