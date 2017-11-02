@@ -15,11 +15,11 @@ var User = new mongoose.Schema({
 });
 
 var Playlist = new mongoose.Schema({
-	videoIdarray = [Number]
+	videoIdarray: [Number]
 });
 
-mongoose.model('Movie', Movie);
+mongoose.model('Video', Video);
 mongoose.model('User', User);
 mongoose.model('Playlist', Playlist);
 
-mongoose.connect('mongodb://localhost/youtube');
+mongoose.connect('mongodb://localhost/finalproject');
