@@ -59,4 +59,4 @@ app.post('/login', function(req, res){
 	res.render('login.hbs');
 });
 
-app.listen(3000);
+app.listen(process.env.PORT || 3000);
