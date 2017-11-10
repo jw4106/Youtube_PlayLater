@@ -2,18 +2,18 @@
 
 <hr> 
 
-<h2><center>Current PlayList</center></h2></br> 
-	<center><a href="/playlist">Insert link to individual playlist</a></center>
+<h2><center>Current PlayLists</center></h2>
 	{{#each Playlist}}
-	<center><h3>Insert link to playlist</h3></center>
+	<center><a href="/playlist/{{slug}}"> <h1>{{title}}</h1> </a></center>
 	{{/each}}
 
 <hr> 
 
-<form method="GET" action="">
+<form method="POST" action="">
 	<h2><center>New Playlist</center></h2></br>
 	</br>
 	<center><input type="text" name="new_playlist" placeholder="Playlist Name"></center>
+	<center><input type="submit" value="Submit"><center>
 </form>
 
 <hr> 

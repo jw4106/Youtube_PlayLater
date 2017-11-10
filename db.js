@@ -1,5 +1,6 @@
 // db.js
 var mongoose = require('mongoose')
+const URLSlugs = require('mongoose-url-slugs');
 
 //Each video object with title, link- for html purposes and videoId just in case
 var Video = new mongoose.Schema({
@@ -19,12 +20,14 @@ var User = new mongoose.Schema({
 
 //each playlist will store videoIds for each video that is in it
 var Playlist = new mongoose.Schema({
+	title: String,
 	videoIdarray: [Number]
 });
 
 mongoose.model('Video', Video);
 mongoose.model('User', User);
 mongoose.model('Playlist', Playlist);
+Playlist.plugin(URLSlugs('title'));
 
 //===============================================================================
 // is the environment variable, NODE_ENV, set to PRODUCTION? 
@@ -42,7 +45,7 @@ if (process.env.NODE_ENV === 'PRODUCTION') {
  let dbconf = conf.dbconf;
 } else {
  // if we're not in PRODUCTION mode, then use
- dbconf = 'mongodb://localhost/jw4106';
+dbconf = 'mongodb://localhost/jw4106';
 mongoose.connect(dbconf);
 }
 //==============================================================================

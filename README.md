@@ -54,8 +54,6 @@ Video objects {
 
 ## User Stories or Use Cases
 
-(___TODO__: write out how your application will be used through [user stories](http://en.wikipedia.org/wiki/User_story#Format) and / or [use cases](https://www.mongodb.com/download-center?jmp=docs&_ga=1.47552679.1838903181.1489282706#previous)_)
-
 1. as non-registered user, I can register a new account with the site
 2. as a user, I can log in to the site
 3. as a user, I can create a playlist list
@@ -74,6 +72,14 @@ Video objects {
     * see <code>cs.nyu.edu/~jversoza/ait-final/my-form</code>
     * if you put in a number that's greater than 5, an error message will appear in the dom
 
+-Using Youtube Data v3 API for Login Authentication/Search Function https://developers.google.com/youtube/v3/getting-started
+  -Currently reading many many many articles...
+  -registered credentials for google API
+  -implementing https://developers.google.com/youtube/v3/docs/search/list
+  -Implementing youtube user authentication https://developers.google.com/youtube/v3/guides/auth/client-side-web-apps
+  -display user playlists based on account
+  -all playlist videos and playlist names will be saved to mongodb, any changes will also affect mongo database
+
 
 ## [Link to Initial Main Project File](app.js) 
 
@@ -83,4 +89,4 @@ Video objects {
 
 1. [passport.js authentication docs](http://passportjs.org/docs) - (add link to source code that was based on this)
 2. [Youtube API tutorial](https://www.youtube.com/watch?v=-vH2eZAM30s)
-3. Not many tutorials yet...
+3. 
