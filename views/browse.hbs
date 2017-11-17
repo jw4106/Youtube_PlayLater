@@ -3,64 +3,54 @@
 
 <hr>
 
-<form method="POST" action="">
+<form action="#">
   <h2><center>Search</center></h2></br>
-  <center><input type="text" name="search" placeholder="Search"></center>
+  <center><input type="text" id="search" placeholder="Search"></center>
   <center><input type="submit" value="Search!"><center>
   </br>
 </form>
 
-<center>
-<iframe width="320" height="180" src="https://www.youtube.com/embed/b5SphZXOvp4" frameborder="0" gesture="media" allowfullscreen></iframe>
 
-<form method="GET" action="">
-  <select name="playlist">
-    <option value="Playlist 1">Playlist 1</option>
-    <option value="Playlist 2">Playlist 2</option>
-    <option value="Playlist 3">Playlist 3</option>
-    <option value="Playlist 4">Playlist 4</option>
-  </select>
-  <br><br>
-  <input type="submit">
-</form>
+<div id="results">
+</div>
 
-<iframe width="320" height="180" src="https://www.youtube.com/embed/b5SphZXOvp4" frameborder="0" gesture="media" allowfullscreen></iframe>
+    <script src="https://apis.google.com/js/client.js?onload=init" type="text/javascript"></script> 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
-<form method="GET" action="">
-  <select name="playlist">
-    <option value="Playlist 1">Playlist 1</option>
-    <option value="Playlist 2">Playlist 2</option>
-    <option value="Playlist 3">Playlist 3</option>
-    <option value="Playlist 4">Playlist 4</option>
-  </select>
-  <br><br>
-  <input type="submit">
-</form>
+<script>
+$(document).ready(function(){
+  $("form").on("submit", function(e){
+    e.preventDefault();
+    var request = gapi.client.youtube.search.list({
+      part: "snippet",
+      type: "video",
+      q: encodeURIComponent($("#search").val()).replace(/%20/g,"+"),
+      maxResults: 5
+    });
 
+    request.execute(function(response){
+      var results = response.result;
+      $("#results").empty();
+      $.each(results.items, function(index, item){
+        $("#results").append("<h3>"+item.snippet.title+"<h3>");
+        let url = "https://www.youtube.com/embed/"+item.id.videoId;
+        $('<iframe>', {
+          src: url,
+          frameborder: 0,
+          width: 420,
+          height: 315
+        }).appendTo("#results");
+      });
+    });
 
-<iframe width="320" height="180" src="https://www.youtube.com/embed/b5SphZXOvp4" frameborder="0" gesture="media" allowfullscreen></iframe>
+  });
+  });
 
-<form method="GET" action="">
-  <select name="playlist">
-    <option value="Playlist 1">Playlist 1</option>
-    <option value="Playlist 2">Playlist 2</option>
-    <option value="Playlist 3">Playlist 3</option>
-    <option value="Playlist 4">Playlist 4</option>
-  </select>
-  <br><br>
-  <input type="submit">
-</form>
+  function init(){
+  gapi.client.setApiKey("AIzaSyDnh-tCepIFtV-C7qwY5r9wZXCItU4sEbw");
+  gapi.client.load("youtube", "v3", function(){
+    //yt api ready
+  }); 
+}
+</script>
 
-<iframe width="320" height="180" src="https://www.youtube.com/embed/b5SphZXOvp4" frameborder="0" gesture="media" allowfullscreen></iframe>
-
-<form method="GET" action="">
-  <select name="playlist">
-    <option value="Playlist 1">Playlist 1</option>
-    <option value="Playlist 2">Playlist 2</option>
-    <option value="Playlist 3">Playlist 3</option>
-    <option value="Playlist 4">Playlist 4</option>
-  </select>
-  <br><br>
-  <input type="submit">
-</form>
-</center>

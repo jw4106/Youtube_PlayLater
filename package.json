@@ -4,12 +4,16 @@
   "description": "## Overview",
   "main": "db.js",
   "dependencies": {
+    "ajax": "0.0.4",
     "body-parser": "^1.18.2",
     "express": "^4.16.2",
     "express-session": "^1.15.6",
+    "google-auth-library": "^0.11.0",
     "googleapis": "^22.2.0",
     "handlebars": "^4.0.11",
     "hbs": "^4.0.1",
+    "jquery": "^3.2.1",
+    "jsdom": "^11.3.0",
     "mongoose": "^4.12.5",
     "mongoose-url-slugs": "^1.0.2"
   },

@@ -2,8 +2,11 @@ const express = require('express');
 const app = express();
 require('./db');
 app.set('view engine', 'hbs');
+var $ = require('jquery');
+
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: false }));
+app.use('/jquery', express.static(__dirname + '/node_modules/jquery/dist/'));
 
 var mongoose = require('mongoose');
 
@@ -12,6 +15,8 @@ var Playlist = mongoose.model('Playlist');
 var Video = mongoose.model('Video');
 
 var loggedin = true;
+let search = "";
+let array = undefined;
 
 app.post('/home', function(req, res) {
 	new Playlist({
@@ -27,7 +32,7 @@ app.get('/home', function(req, res) {
 		Playlist.find({}, function(err, varToStoreResult, count) {
 			//console.log(varToStoreResult); // <---- variable contains found documents!
 	    	//res.render('home.hbs', {varToStoreResult: sessionplaylist[userId]});
-	    	res.render('home.hbs', {Playlist: varToStoreResult});
+	    	res.render('home.hbs', {Playlist: varToStoreResult, array:array});
 		});
 	}
 	else{
@@ -37,24 +42,14 @@ app.get('/home', function(req, res) {
 
 //implementing youtube api search function
 app.get('/browse', function(req, res){
-	//this will render youtube API searchlist to display search videos
-	// function handleAPILoaded(){
-	// 	4('#search-button').attr('disabled', false);
-	// }
-	// function search(){
-	// 	var q = $('query').val();
-	// 	var request = gapi.client.youtube.searchlist({
-	// 		q: q,
-	// 		part: 'snippet'
-	// 	});
-
-	// 	request.execute(function(response){
-	// 		var str = JSON.stringify(response.result);
-	// 		$('#search-container').html('<pre>' + str + '</pre>');
-	// 	});
-	// }
+	//prepare the request 
 
 	res.render('browse.hbs');
+});
+
+app.post('/browse', function(req, res){
+	search = req.body.search;
+	res.redirect('/browse');
 });
 
 app.get('/playlist', function(req, res){
