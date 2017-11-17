@@ -3,9 +3,13 @@
 
 <hr>
 
+ <center><form method="POST" action="">
+  <h3>Add To PlayList:(NOT FUNCTIONAL)<h3>  
   {{#each Playlist}}
-    <p>{{title}}</p>
+    {{title}}&emsp;<input type="text" name="{{array}}" placeholder="Movie Name"></br>
   {{/each}}
+  <input type="submit" value="Submit">
+</form></center> 
 
 <form action="#">
   <h2><center>Search</center></h2></br>
