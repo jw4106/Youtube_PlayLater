@@ -42,13 +42,12 @@ app.get('/home', function(req, res) {
 
 //implementing youtube api search function
 app.get('/browse', function(req, res){
-	//prepare the request 
-
-	res.render('browse.hbs');
+	Playlist.find({}, function(err, varToStoreResult, count) {
+    	res.render('browse.hbs', {Playlist: varToStoreResult});
+	});
 });
 
 app.post('/browse', function(req, res){
-	search = req.body.search;
 	res.redirect('/browse');
 });
 
@@ -83,3 +82,5 @@ app.post('/login', function(req, res){
 });
 
 app.listen(process.env.PORT || 3000);
+
+// $("#results").append("<text area rows=\"1\" cols=\"100\">https://www.youtube.com/embed/"+item.id.videoId+"</textarea>");

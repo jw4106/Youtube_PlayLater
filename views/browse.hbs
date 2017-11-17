@@ -3,10 +3,14 @@
 
 <hr>
 
+  {{#each Playlist}}
+    <p>{{title}}</p>
+  {{/each}}
+
 <form action="#">
   <h2><center>Search</center></h2></br>
   <center><input type="text" id="search" placeholder="Search"></center>
-  <center><input type="submit" value="Search!"><center>
+  <center><input type="submit" id="searchsubmit" value="Search!"><center>
   </br>
 </form>
 
@@ -32,17 +36,19 @@ $(document).ready(function(){
       var results = response.result;
       $("#results").empty();
       $.each(results.items, function(index, item){
-        $("#results").append("<h3>"+item.snippet.title+"<h3>");
+
         let url = "https://www.youtube.com/embed/"+item.id.videoId;
+
+        $("#results").append("<h3>"+item.snippet.title+"<h3>");
         $('<iframe>', {
           src: url,
           frameborder: 0,
           width: 420,
           height: 315
         }).appendTo("#results");
-      });
+        $("#results").append("<text area rows=\"1\" cols=\"100\">https://www.youtube.com/embed/"+item.id.videoId+"</textarea>");
+      });   
     });
-
   });
   });
 
