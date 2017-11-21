@@ -15,7 +15,7 @@ var session = require('express-session');
 require('./config/passport')(passport);
 app.use(morgan('dev'));
 app.use(cookieParser());
-app.use(session({secret: 'AITBestClass'}));
+app.use(session({secret: 'AITBestClass', resave: true, saveUninitialized: true}));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
