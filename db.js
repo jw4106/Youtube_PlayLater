@@ -1,6 +1,7 @@
 // db.js
 var mongoose = require('mongoose')
 const URLSlugs = require('mongoose-url-slugs');
+var bcrypt = require('bcrypt-nodejs');
 
 //Each video object with title, link- for html purposes and videoId just in case
 var Video = new mongoose.Schema({
@@ -9,23 +10,33 @@ var Video = new mongoose.Schema({
 	videoId: Number
 });
 
-//each user will have a password/username [password will be hashed later]
-//playlist storing video objects that can be displayed later
-var User = new mongoose.Schema({
-	username: String,
-	password: String,
-	playlist: [String] 
-});
-
-
 //each playlist will store videoIds for each video that is in it
 var Playlist = new mongoose.Schema({
 	title: String,
 	videoIdarray: [Number]
 });
 
+//each user will have a password/username [password will be hashed later]
+//playlist storing video objects that can be displayed later
+var userSchema = new mongoose.Schema({
+	local : {
+		email: String,
+		password: String,
+		playlist: [String] 
+	}
+});
+
+userSchema.methods.generateHash = function(password){
+	return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
+};
+
+userSchema.methods.validPassword = function(password){
+	return bcrypt.compareSync(password, this.local.password);
+}
+
+
 mongoose.model('Video', Video);
-mongoose.model('User', User);
+module.exports = mongoose.model('User', userSchema);
 mongoose.model('Playlist', Playlist);
 Playlist.plugin(URLSlugs('title'));
 
