@@ -1,7 +1,6 @@
 const express = require('express');
 const app = express();
-//require('./db');
-var configDB = require('./db');
+require('./db');
 
 app.set('view engine', 'hbs');
 var $ = require('jquery');
@@ -29,9 +28,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use('/jquery', express.static(__dirname + '/node_modules/jquery/dist/'));
 
 var mongoose = require('mongoose');
-//JUST ADDED
-mongoose.connect(configDB.url);
-
 var User = mongoose.model('User');
 var Playlist = mongoose.model('Playlist');
 var Video = mongoose.model('Video');
