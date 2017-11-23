@@ -58,8 +58,8 @@ if (process.env.NODE_ENV === 'PRODUCTION') {
 } else {
  // if we're not in PRODUCTION mode, then use
 dbconf = 'mongodb://localhost/jw4106';
-mongoose.connect(dbconf);
 }
+mongoose.connect(dbconf);
 //==============================================================================
 
 //mongoose.connect('mongodb://localhost/finalproject');
