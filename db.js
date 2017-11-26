@@ -13,7 +13,7 @@ var Video = new mongoose.Schema({
 //each playlist will store videoIds for each video that is in it
 var Playlist = new mongoose.Schema({
 	title: String,
-	videoIdarray: [Number]
+	videoIdarray: [Video]
 });
 
 //each user will have a password/username [password will be hashed later]
@@ -22,8 +22,8 @@ var userSchema = new mongoose.Schema({
 	local : {
 		email: String,
 		password: String,
-		playlist: [String] 
-	}
+	},
+	playlists: [Playlist] 
 });
 
 userSchema.methods.generateHash = function(password){
@@ -35,10 +35,10 @@ userSchema.methods.validPassword = function(password){
 }
 
 
+Playlist.plugin(URLSlugs('title'));
 mongoose.model('Video', Video);
 module.exports = mongoose.model('User', userSchema);
 mongoose.model('Playlist', Playlist);
-Playlist.plugin(URLSlugs('title'));
 
 //===============================================================================
 // is the environment variable, NODE_ENV, set to PRODUCTION? 

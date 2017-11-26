@@ -77,47 +77,52 @@ function isLoggedIn(req, res, next){
 }
 //====================================================================================
 
-
-var loggedin = true;
-let search = "";
 let array = undefined;
 
-app.post('/home', function(req, res) {
-	new Playlist({
-		title: req.body.new_playlist
-	}).save(function(err, playlist, count){
-		console.log('success', playlist, count, err);
-		res.redirect('/home');
-	});    
+app.post('/home',isLoggedIn, function(req, res) {
+
+	let playlist = new Playlist({title: req.body.new_playlist, videoIdArray: []});
+	console.log(playlist);
+	User.findOneAndUpdate(
+		{
+			"local.email":req.user.local.email
+		}, 
+		{
+			$push: 
+			{
+				playlists: playlist
+			}
+		}, 
+		function(err, post, count){
+			res.redirect('/home');
+		});	
+
 });
 
 app.get('/home', isLoggedIn,function(req, res) {
-	Playlist.find({}, function(err, varToStoreResult, count) {
-		//console.log(varToStoreResult); // <---- variable contains found documents!
-    	//res.render('home.hbs', {varToStoreResult: sessionplaylist[userId]});
-    	res.render('home.hbs', {Playlist: varToStoreResult, array:array});
+	User.find({"local.email":req.user.local.email}, function(err, user, count) {
+    	res.render('home.hbs', {Playlist: req.user.playlists, user:req.user.local});
 	});
 });
 
 //implementing youtube api search function
 app.get('/browse', isLoggedIn, function(req, res){
-	Playlist.find({}, function(err, varToStoreResult, count) {
-    	res.render('browse.hbs', {Playlist: varToStoreResult});
-	});
+	res.render('browse.hbs');
 });
 
-app.post('/browse', function(req, res){
+app.post('/browse', isLoggedIn, function(req, res){
 	res.redirect('/browse');
 });
 
-app.get('/playlist', isLoggedIn, function(req, res){
-	res.render('playlist.hbs');
-});
+// app.get('/playlist', isLoggedIn, function(req, res){
+// 	res.render('playlist.hbs');
+// });
 
-app.get('/playlist/:slug', function(req, res){
-	ImagePost.find({slug:req.params.slug},(err, post, count)=>{
-		res.render('playlist', {playlist: post});
-	} )
+app.get('/playlist/:slug', isLoggedIn, function(req, res){
+	User.find({"local.email":req.user.local.email},(err, post, count)=>{
+		console.log(post.playlist);
+		res.render('playlist2', {playlist: post.playlist});
+	})
 });
 
 app.listen(process.env.PORT || 3000);
