@@ -1,22 +1,31 @@
 app.use('/jquery', express.static(__dirname + '/node_modules/jquery/dist/'));
 
 $(document).ready(function(){
-  $("form").on("submit", function(e){
+  $("#searchquery").on("submit", function(e){
     e.preventDefault();
     var request = gapi.client.youtube.search.list({
       part: "snippet",
       type: "video",
       q: encodeURIComponent($("#search").val()).replace(/%20/g,"+"),
-      maxResults: 10,
-      order: "viewCount"
+      maxResults: 5
     });
+
     request.execute(function(response){
       var results = response.result;
-      console.log(results);
+      $("#results").empty();
       $.each(results.items, function(index, item){
+
+        let url = "https://www.youtube.com/embed/"+item.id.videoId;
+
         $("#results").append("<h3>"+item.snippet.title+"<h3>");
-        $("#results").append("<h1>www.youtube.com/watch?v="+item.id.videoId+"</h1>");
-      });
+        $("#results").append("<text area rows=\"2\" cols=\"50\">"+url+"</textarea></br></br>");
+        $('<iframe>', {
+          src: url,
+          frameborder: 0,
+          width: 420,
+          height: 315
+        }).appendTo("#results");
+      });   
     });
   });
   });

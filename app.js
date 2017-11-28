@@ -107,16 +107,16 @@ app.get('/home', isLoggedIn,function(req, res) {
 
 //implementing youtube api search function
 app.get('/browse', isLoggedIn, function(req, res){
-	res.render('browse.hbs');
+	res.render('browse.hbs', {Playlist: req.user.playlists});
 });
 
+
 app.post('/browse', isLoggedIn, function(req, res){
+	console.log("test");
+	console.log(req.body.videolink + " " + req.body.playlistchoice);
 	res.redirect('/browse');
 });
 
-// app.get('/playlist', isLoggedIn, function(req, res){
-// 	res.render('playlist.hbs');
-// });
 
 app.get('/playlist/:slug', isLoggedIn, function(req, res){
 	User.find({"local.email":req.user.local.email},(err, post, count)=>{

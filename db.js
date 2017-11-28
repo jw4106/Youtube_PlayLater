@@ -61,6 +61,3 @@ dbconf = 'mongodb://localhost/jw4106';
 }
 mongoose.connect(dbconf);
 //==============================================================================
-
-//mongoose.connect('mongodb://localhost/finalproject');
-//mongoose.connect('mongodb://jw4106:dNmDqrh3@class-mongodb.cims.nyu.edu/jw4106');
