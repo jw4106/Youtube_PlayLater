@@ -5,15 +5,14 @@ var bcrypt = require('bcrypt-nodejs');
 
 //Each video object with title, link- for html purposes and videoId just in case
 var Video = new mongoose.Schema({
-	title: String,
-	link: String,
-	videoId: Number
+	link: String
 });
 
 //each playlist will store videoIds for each video that is in it
 var Playlist = new mongoose.Schema({
 	title: String,
-	videoIdarray: [Video]
+	videoIdarray: [Video],
+	slug: String
 });
 
 //each user will have a password/username [password will be hashed later]

@@ -31,44 +31,11 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="javascripts/main.js"></script>
 
-<script>
-
-<center><a href="/login">Log Out</a></center><br>
-<center><a href="/home">Home</a></center><br>
-
-<hr>
-
- <center>
- <form method="POST" action="">
-  <h3>Add To PlayList:<h3>  
-  <select name=playlistchoice>
-    {{#each Playlist}}
-        <option value="{{title}}">{{title}}</option>
-    {{/each}}
-  </select>
-  <input type="text" name="videolink" placeholder="Enter Link Here"></br>
-  <input type="submit" value="Submit">
-</form>
-</center> 
-
-<form action="#">
-  <h2><center>Search</center></h2></br>
-  <center><input type="text" id="search" placeholder="Search"></center>
-  <center><input type="submit" id="searchsubmit" value="Search!"><center>
-  </br>
-</form>
-
-
-<div id="results">
-</div>
-
-    <script src="https://apis.google.com/js/client.js?onload=init" type="text/javascript"></script> 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
 <script>
 
 $(document).ready(function(){
-  $("form").on("submit", function(e){
+  $("#searchquery").on("submit", function(e){
     e.preventDefault();
     var request = gapi.client.youtube.search.list({
       part: "snippet",
@@ -106,8 +73,4 @@ $(document).ready(function(){
 
 </script>
 
-
-
-
-</script>
 

@@ -3,28 +3,20 @@
 
 
 
+
+<center><h2>Your Playlist:</h2></center>
+<center><h2>{{playlist.title}}<h2></center>
+
+<center>
+<form action="" method="POST">
 {{#each playlist}}
-<h2>{{title}}<h2>
+	<iframe width="320" height="180" src="{{link}}" frameborder="0" gesture="media" allowfullscreen></iframe><br>
+
+	<input type="checkbox" name="array" value="{{link}}"> Remove<br>
+
 {{/each}}
 
-<center>
-<iframe width="320" height="180" src="https://www.youtube.com/embed/b5SphZXOvp4" frameborder="0" gesture="media" allowfullscreen></iframe>
-
-<form action="" method="POST">
-  <input type="checkbox" name="removevideo" value="Remove"> Remove<br>
-  <input type="submit" value="Submit">
-</form>
-
-</center>
-
-
-
-<center>
-<iframe width="320" height="180" src="https://www.youtube.com/embed/b5SphZXOvp4" frameborder="0" gesture="media" allowfullscreen></iframe>
-
-<form action="" method="POST">
-  <input type="checkbox" name="removevideo" value="Remove"> Remove<br>
-  <input type="submit" value="Submit">
+  <input type="submit" value="Delete From Playlist">
 </form>
 
 </center>

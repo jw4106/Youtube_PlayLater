@@ -3,6 +3,8 @@ const app = express();
 require('./db');
 
 app.set('view engine', 'hbs');
+app.use(express.urlencoded({ extended: false }));
+app.use(express.static('public'));
 var $ = require('jquery');
 
 //==========PASSPORT============================
@@ -80,28 +82,36 @@ function isLoggedIn(req, res, next){
 let array = undefined;
 
 app.post('/home',isLoggedIn, function(req, res) {
+	if(req.body.new_playlist.length >= 1){	
+		let playlist = new Playlist({title: req.body.new_playlist, videoIdArray: []});
+		// explicitly call validate here
+        playlist.validate(function(err) {
 
-	let playlist = new Playlist({title: req.body.new_playlist, videoIdArray: []});
-	console.log(playlist);
-	User.findOneAndUpdate(
-		{
-			"local.email":req.user.local.email
-		}, 
-		{
-			$push: 
-			{
-				playlists: playlist
-			}
-		}, 
-		function(err, post, count){
-			res.redirect('/home');
-		});	
+            User.findOneAndUpdate(
+            {
+                "_id":req.user.id
+            }, 
+            {
+                $push: 
+                {
+                    playlists: playlist
+                }
+            }, 
+            function(err, post, count){
+                res.redirect('/home');
+            });	
+        });	
+	}
+	else{
+		res.redirect('/home');
+	}
 
 });
 
 app.get('/home', isLoggedIn,function(req, res) {
-	User.find({"local.email":req.user.local.email}, function(err, user, count) {
-    	res.render('home.hbs', {Playlist: req.user.playlists, user:req.user.local});
+
+	User.find({"_id":req.user.id}, function(err, user, count) {	
+    	res.render('home.hbs', {Playlist : req.user.playlists, user : req.user.local});
 	});
 });
 
@@ -112,17 +122,71 @@ app.get('/browse', isLoggedIn, function(req, res){
 
 
 app.post('/browse', isLoggedIn, function(req, res){
-	console.log("test");
-	console.log(req.body.videolink + " " + req.body.playlistchoice);
-	res.redirect('/browse');
+	let video = new Video({link : req.body.videolink});
+	video.validate(function(err) {
+		User.find({"_id":req.user.id},(err, user, count)=>{
+		let index = 0;
+		//console.log(user);
+		for(let i = 0; i < user[0].playlists.length; i++){
+			if(user[0].playlists[i].title === req.body.playlistchoice){
+				user[0].playlists[i].videoIdarray.push(video);
+				index = i;
+			}
+		}
+		user[0].save(function(err){
+			res.redirect('/playlist/'+req.user.playlists[index].slug);			
+		});
+		});	
+	});	
 });
 
 
 app.get('/playlist/:slug', isLoggedIn, function(req, res){
-	User.find({"local.email":req.user.local.email},(err, post, count)=>{
-		console.log(post.playlist);
-		res.render('playlist2', {playlist: post.playlist});
-	})
+	User.find({"_id":req.user.id},(err, user, count)=>{
+		//console.log(user);
+		for(let i = 0; i < user[0].playlists.length; i++){
+			if(user[0].playlists[i].slug === req.params.slug){
+				console.log(user[0].playlists[i].videoIdarray);
+				res.render('playlist', {playlist: user[0].playlists[i].videoIdarray});
+			}
+		}
+	});
 });
+
+app.post('/playlist/:slug', isLoggedIn, function(req, res){
+	console.log("reached");
+	User.find({"_id":req.user.id},(err, user, count)=>{
+	let index = 0;
+	if(Array.isArray(req.body.array)){
+		for(let i = 0; i < user[0].playlists.length; i++){
+			if(user[0].playlists[i].slug === req.params.slug){
+				index = i;
+			}
+		}
+		for(let j = 0; j < req.body.array.length; j++){
+			for(let k = 0; k < user[0].playlists[index].videoIdarray.length; k++){
+				if(user[0].playlists[index].videoIdarray[k].link === req.body.array[j]){
+					user[0].playlists[index].videoIdarray.splice(k, 1);
+					console.log(user[0].playlists[index].videoIdarray);
+				}
+			}
+		}	
+		console.log(user[0].playlists[index].videoIdarray);
+	}
+	else{
+		for(let l = 0; l < user[0].playlists[index].videoIdarray.length; l++){
+			if(user[0].playlists[index].videoIdarray[l].link === req.body.array){
+				user[0].playlists[index].videoIdarray.splice(l, 1);
+					console.log(user[0].playlists[index].videoIdarray);
+			}
+		}
+	}
+	user[0].save(function(err){
+		res.redirect('/playlist/'+req.params.slug);			
+	});
+	});		
+});
+
+
 
 app.listen(process.env.PORT || 3000);
