@@ -123,18 +123,27 @@ app.get('/browse', isLoggedIn, function(req, res){
 
 app.post('/browse', isLoggedIn, function(req, res){
 	let video = new Video({link : req.body.videolink});
+	let redirection = 0;
 	video.validate(function(err) {
 		User.find({"_id":req.user.id},(err, user, count)=>{
 		let index = 0;
 		//console.log(user);
 		for(let i = 0; i < user[0].playlists.length; i++){
-			if(user[0].playlists[i].title === req.body.playlistchoice){
-				user[0].playlists[i].videoIdarray.push(video);
-				index = i;
+			if(req.body.videolink.indexOf("https://www.youtube.com/embed/") !== -1){
+				if(user[0].playlists[i].title === req.body.playlistchoice){
+					user[0].playlists[i].videoIdarray.push(video);
+					index = i;
+					redirection = 1;
+				}
 			}
 		}
 		user[0].save(function(err){
-			res.redirect('/playlist/'+req.user.playlists[index].slug);			
+			if(redirection === 0){
+				res.redirect('/browse');
+			}
+			else{
+				res.redirect('/playlist/'+req.user.playlists[index].slug);			
+			}
 		});
 		});	
 	});	
@@ -146,7 +155,6 @@ app.get('/playlist/:slug', isLoggedIn, function(req, res){
 		//console.log(user);
 		for(let i = 0; i < user[0].playlists.length; i++){
 			if(user[0].playlists[i].slug === req.params.slug){
-				console.log(user[0].playlists[i].videoIdarray);
 				res.render('playlist', {playlist: user[0].playlists[i].videoIdarray});
 			}
 		}
@@ -154,7 +162,6 @@ app.get('/playlist/:slug', isLoggedIn, function(req, res){
 });
 
 app.post('/playlist/:slug', isLoggedIn, function(req, res){
-	console.log("reached");
 	User.find({"_id":req.user.id},(err, user, count)=>{
 	let index = 0;
 	if(Array.isArray(req.body.array)){
@@ -167,26 +174,25 @@ app.post('/playlist/:slug', isLoggedIn, function(req, res){
 			for(let k = 0; k < user[0].playlists[index].videoIdarray.length; k++){
 				if(user[0].playlists[index].videoIdarray[k].link === req.body.array[j]){
 					user[0].playlists[index].videoIdarray.splice(k, 1);
-					console.log(user[0].playlists[index].videoIdarray);
 				}
 			}
 		}	
-		console.log(user[0].playlists[index].videoIdarray);
 	}
-	else{
-		for(let l = 0; l < user[0].playlists[index].videoIdarray.length; l++){
+	else{		
+		for(let l = 0; l < user[0].playlists[index].videoIdarray.length; l++){			
 			if(user[0].playlists[index].videoIdarray[l].link === req.body.array){
 				user[0].playlists[index].videoIdarray.splice(l, 1);
-					console.log(user[0].playlists[index].videoIdarray);
 			}
 		}
 	}
 	user[0].save(function(err){
-		res.redirect('/playlist/'+req.params.slug);			
+		res.redirect('/playlist/'+req.params.slug);		
+		console.log(req.body.array);
+		console.log(user[0].playlists[index].videoIdarray);	
 	});
 	});		
 });
 
-
+"https://www.youtube.com/embed/"
 
 app.listen(process.env.PORT || 3000);
