@@ -10,21 +10,27 @@ You can either create a new playlist, delete from a playlist or browse for video
 
 ## Data Model
 
-User {
-  username: "jevons",
-  hash: // a password hash,
-  playlists: // an array of playlist objects
-}
+//Each video object with title, link- for html purposes and videoId just in case
+var Video = new mongoose.Schema({
+  link: String
+});
 
+//each playlist will store videoIds for each video that is in it
+var Playlist = new mongoose.Schema({
+  title: String,
+  videoIdarray: [Video],
+  slug: String
+});
 
-Playlist objects {
-  videos: //array of video objects
-}
-  
-Video objects {
-  title: "funny pug videos",
-  link: "https://www.youtube.com/watch?v=PyxoUq6LzJc"
-}
+//each user will have a password/username [password will be hashed later]
+//playlist storing video objects that can be displayed later
+var userSchema = new mongoose.Schema({
+  local : {
+    email: String,
+    password: String,
+  },
+  playlists: [Playlist] 
+});
 
 
 ## [Link to Commented First Draft Schema](db.js) 
@@ -43,7 +49,7 @@ Video objects {
 
 ![list](documentation/Browse.png)
 
-/playlist?playlist=name - page showing a playlist
+/playlist/:slug - page showing a playlist
 
 ![list](documentation/PlaylistView.png)
 
@@ -63,22 +69,13 @@ Video objects {
 
 ## Research Topics
 
-(___TODO__: the research topics that you're planning on working on along with their point values... and the total points of research topics listed_)
-
 * (5 points) Integrate user authentication
     * I'm going to be using a login for user authentication
     * And account has been made for testing; I'll email you the password
-* (4 points) Perform client side form validation using a JavaScript library
-    * see <code>cs.nyu.edu/~jversoza/ait-final/my-form</code>
-    * if you put in a number that's greater than 5, an error message will appear in the dom
-
--Using Youtube Data v3 API for Login Authentication/Search Function https://developers.google.com/youtube/v3/getting-started
-  -Currently reading many many many articles...
-  -registered credentials for google API
-  -implementing https://developers.google.com/youtube/v3/docs/search/list
-  -Implementing youtube user authentication https://developers.google.com/youtube/v3/guides/auth/client-side-web-apps
-  -display user playlists based on account
-  -all playlist videos and playlist names will be saved to mongodb, any changes will also affect mongo database
+* (1-6 points) Use a client-side JavaScript library
+    * Youtube API uses client-side video searching from youtube's video database
+* (1-6 points) Per external API used
+    * Youtube Data v3 API     
 
 
 ## [Link to Initial Main Project File](app.js) 
@@ -87,6 +84,7 @@ Video objects {
 
 ## Annotations / References Used
 
-1. [passport.js authentication docs](http://passportjs.org/docs) - (add link to source code that was based on this)
+1. [passport.js authentication docs](https://scotch.io/tutorials/easy-node-authentication-setup-and-local)
 2. [Youtube API tutorial](https://www.youtube.com/watch?v=-vH2eZAM30s)
-3. 
+3. [Another API tutorial](http://www.codexpedia.com/api/youtube-search-api-example-with-javascript-and-html/)
+4. [Another API tutorial](https://developers.google.com/youtube/v3/docs/search/list)
