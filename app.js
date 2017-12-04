@@ -105,7 +105,6 @@ app.post('/home',isLoggedIn, function(req, res) {
 	else{
 		res.redirect('/home');
 	}
-
 });
 
 app.get('/home', isLoggedIn,function(req, res) {
@@ -127,16 +126,17 @@ app.post('/browse', isLoggedIn, function(req, res){
 	video.validate(function(err) {
 		User.find({"_id":req.user.id},(err, user, count)=>{
 		let index = 0;
-		//console.log(user);
-		for(let i = 0; i < user[0].playlists.length; i++){
+		
+		user[0].playlists.map(function(ele, i){
 			if(req.body.videolink.indexOf("https://www.youtube.com/embed/") !== -1){
-				if(user[0].playlists[i].title === req.body.playlistchoice){
-					user[0].playlists[i].videoIdarray.push(video);
+				if(ele.title === req.body.playlistchoice){
+					ele.videoIdarray.push(video);
 					index = i;
 					redirection = 1;
 				}
 			}
-		}
+		});
+
 		user[0].save(function(err){
 			if(redirection === 0){
 				res.redirect('/browse');
@@ -152,12 +152,12 @@ app.post('/browse', isLoggedIn, function(req, res){
 
 app.get('/playlist/:slug', isLoggedIn, function(req, res){
 	User.find({"_id":req.user.id},(err, user, count)=>{
-		//console.log(user);
-		for(let i = 0; i < user[0].playlists.length; i++){
-			if(user[0].playlists[i].slug === req.params.slug){
-				res.render('playlist', {playlist: user[0].playlists[i].videoIdarray});
-			}
-		}
+
+		user[0].playlists.map(function(ele){
+			if(ele.slug === req.params.slug){
+				res.render('playlist', {playlist: ele.videoIdarray});
+			}	
+		});
 	});
 });
 
@@ -165,34 +165,30 @@ app.post('/playlist/:slug', isLoggedIn, function(req, res){
 	User.find({"_id":req.user.id},(err, user, count)=>{
 	let index = 0;
 	if(Array.isArray(req.body.array)){
-		for(let i = 0; i < user[0].playlists.length; i++){
-			if(user[0].playlists[i].slug === req.params.slug){
+		user[0].playlists.map(function(ele, i){
+			if(ele.slug === req.params.slug){
 				index = i;
-			}
-		}
+			}	
+		});		
 		for(let j = 0; j < req.body.array.length; j++){
 			for(let k = 0; k < user[0].playlists[index].videoIdarray.length; k++){
 				if(user[0].playlists[index].videoIdarray[k].link === req.body.array[j]){
 					user[0].playlists[index].videoIdarray.splice(k, 1);
 				}
 			}
-		}	
+		}		
 	}
 	else{		
 		for(let l = 0; l < user[0].playlists[index].videoIdarray.length; l++){			
 			if(user[0].playlists[index].videoIdarray[l].link === req.body.array){
 				user[0].playlists[index].videoIdarray.splice(l, 1);
 			}
-		}
+		}				
 	}
 	user[0].save(function(err){
 		res.redirect('/playlist/'+req.params.slug);		
-		console.log(req.body.array);
-		console.log(user[0].playlists[index].videoIdarray);	
 	});
 	});		
 });
-
-"https://www.youtube.com/embed/"
 
 app.listen(process.env.PORT || 3000);
